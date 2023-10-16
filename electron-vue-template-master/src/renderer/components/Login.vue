@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import axios from "axios";
 import { useIsLoggedInStore } from "../stores/login";
+import { ref } from 'vue'
 
 const store = useIsLoggedInStore();
 
@@ -9,15 +10,28 @@ const loginHandler = () => {
 };
 
 const emailRules = [
-  (v) =>
-    v.match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    ) || "Invalid Email address",
-];
+  (value: string) => {
+    if (!value){
+      return 'Email is required'
+    }
+
+    if (!/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) {
+      return 'Invalid email'
+    }
+  }
+]
+
+const passwordRules = [
+  (value: string) => {
+    if (!value){
+      return 'Password is required'
+    }
+  }
+]
 </script>
 
 <template>
-  <v-form>
+  <v-form fast-fail @submit.prevent>
     <div class="form-line">
       <v-responsive class="mx-auto" max-width="344">
         <v-text-field
@@ -27,6 +41,7 @@ const emailRules = [
           variant="solo-filled"
           clearable
           prepend-inner-icon="mdi-email-outline"
+          validate-on="blur"
         ></v-text-field>
       </v-responsive>
       <div class="form-line">
@@ -42,7 +57,7 @@ const emailRules = [
       </div>
     </div>
 
-    <button @click="loginHandler">Login</button>
+    <v-btn @click="loginHandler">Login</v-btn>
   </v-form>
 </template>
 
