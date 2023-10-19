@@ -49,9 +49,11 @@ const passwordRules = [
           <v-text-field
             label="Password"
             hint="Enter your password"
+            :rules="passwordRules"
             variant="solo-filled"
             clearable
             prepend-inner-icon="mdi-key-variant"
+            validate-on="blur"
           ></v-text-field>
         </v-responsive>
       </div>
